@@ -9,7 +9,7 @@ A CLI-based hierarchical file system simulation implemented in C. This project d
 * **Recycle Bin:** Deleted files are moved to a **Queue** structure (Recycle Bin) before permanent deletion.
 * **Fast Search:** Optimized search functionality using **Recursion** (DFS) and **Hash Tables**.
 
-## 🛠 Supported Commands
+## 🛠 Supported Commands //BURASI SONRASINDA DEĞİŞTİRİLECEK
 * `mkdir [name]` : Create a new directory.
 * `touch [name]` : Create a new file.
 * `ls` : List contents of the current directory.
