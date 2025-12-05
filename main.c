@@ -6,6 +6,5 @@ int main(void){
 
 
     
-    system("pause"); //cmd'de iş bittikten sonra pencere hemen kapanması diye pause kodu.
-    return 0;
+    printf("\n");system("pause");return 0;//cmd'de iş bittikten sonra pencere hemen kapanması diye pause kodu.
 }
