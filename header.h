@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h> //CLI Menü için kütüphane
 
 // Sabitler (Buffer boyutları vs. buraya yazalım)
 #define MAX_FILENAME 100
