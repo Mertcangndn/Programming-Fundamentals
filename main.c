@@ -1,7 +1,11 @@
 #include "header.h"
-#include <stdio.h>
 
 int main(void){
-    printf("Hello World");
+    int number;
+    
+
+
+    
+    system("pause"); //cmd'de iş bittikten sonra pencere hemen kapanması diye pause kodu.
     return 0;
 }
