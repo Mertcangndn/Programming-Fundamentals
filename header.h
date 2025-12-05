@@ -12,6 +12,7 @@
 
 // Fonksiyon Prototiplerini (İmzalarını Buraya Yazalım)
 // exp: void create_file(const char *filename); gibi gibi
+void menu(void);
 
 // 1. Dosya İşlemleri
 //...

@@ -2,7 +2,7 @@
 
 int main(void){
     int number;
-    
+    menu();
 
 
     
