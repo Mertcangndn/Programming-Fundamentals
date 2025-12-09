@@ -4,7 +4,8 @@ void loadingScreen(void){
 
     char loadingWheel[]={'/','-','\\','|'};
 
-printf("\033[0;32m"); //Yeşil renk
+    color(10);
+    
     printf("\n\n\n");
     printf("    ______ _ __      __  ___                                   __           \n");
     printf("   / ____/(_) /___  /  |/  /___ _____  ____ _____ ____  ____  / /_          \n");
@@ -18,11 +19,15 @@ printf("\033[0;32m"); //Yeşil renk
     printf("            /___/   / / /___/ / / / /___/ /  / /                                 \n");
     printf("                   /_/       /_/ /_____/_/  /_/                                  \n");
     printf("\n");
-printf("\033[0;31m"); //Kırmızı renk
+
+    color(12);
+
     printf("                  Mertcan Gundogan\n");
     printf("                   Volkan Tastemir\n");
     printf("                     Eray Bekar\n\n");
-printf("\033[0;34m"); //Mavi renk
+
+    color(1);
+
     printf("                    Yukleniyor...");
     
     //DÖNME EFEKTİ
