@@ -39,6 +39,6 @@ void loadingScreen(void){
         }
     }
 
-printf("\033[0m"); //Beyaz renk (default)
+    color(7);
     system("cls");  //Yüklenme ekranını silme
 }
