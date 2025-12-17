@@ -35,17 +35,43 @@ void listDirectory(File* currentFile){
         return;
     }
 
-    printf("\n%s\n  \\", currentFile->name);
+    printf("\n%s\n  \\", currentFile->name);    //2 boşluklu
     
     while(tempNode!=NULL){
-        printf("\n  |");
+        printf("\n  |");    //2 boşluklu
         if(tempNode->isFolder){
-            printf("\n  [Klasor]    %s",tempNode->name);
+            printf("\n  [Klasor]    %s",tempNode->name);    //2 boşluklu
         }else{
-            printf("\n  [Dosya]     %s",tempNode->name);
+            printf("\n  [Dosya]     %s",tempNode->name);    //2 boşluklu
         }
         tempNode = tempNode->sibling;
     }
 
     printf("\n\n------------------------------\n");
+}
+
+void listAllDirectory(File* root){  //Kaç boşluk bırakıldığına dair bir log tutulmalı, ona göre her recursive bittiğinde geri gelinmeli ("\b")
+    File* tempNode = root;
+
+    //BASE CASE
+    if (tempNode == NULL) {
+        printf("SON");
+        return;
+    }
+
+    if(tempNode->isFolder){
+            printf("\n[Klasor]    %s",tempNode->name);
+    }else{
+            printf("\n[Dosya]     %s",tempNode->name);
+    }
+
+    if(tempNode->child!=NULL){
+        printf("\n  \\");
+        listAllDirectory(tempNode->child);
+    }else{
+        printf("\n  |");    //2 boşluklu
+        listAllDirectory(tempNode->sibling);
+    }
+
+    
 }

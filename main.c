@@ -11,7 +11,12 @@ int main(void){
     addFile(root, "Odevler", 1);       
     addFile(root, "Oyunlar", 1);       
     addFile(root, "notlar.txt", 0);    
-    listDirectory(root);
+    // addFile("Odevler", "Animeler", 1); //BUNLAR SONRA FİND FONKSİYONUYLA BİRLİKTE KULLANILACAK
+    // addFile("Animeler", "highschoolDxD.mp4", 0);
+
+    // listDirectory(root);
+
+    listAllDirectory(root);
     // --------------------------
     
     printf("\n");system("pause");return 0;//cmd'de iş bittikten sonra pencere hemen kapanması diye pause kodu.
