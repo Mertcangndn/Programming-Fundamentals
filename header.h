@@ -39,7 +39,8 @@ void color(int code);   //CMD Üzerindeki yazıların rengini değiştirmek içi
 File* createFile(char* name,int isFolder);  //Node oluşturma (addFile içinde kendinden çalışıyor.)
 void addFile(File* currentFile, char* name, int isFolder); //Dosyayı grafa ekleme
 void listDirectory(File* currentFile);   //Bulunulan herdeki dosyaları yazdırma (düz ls)
-void listAllDirectory(File* root);  //Bütün grafı yazdırma fonksiyonu (ls -a gibi bir kodla çalışabilir.)
+void listAllDirectory(File* root,int *spaceCounter);  //Bütün grafı yazdırma fonksiyonu (ls -a gibi bir kodla çalışabilir.)
+File* changeDirectory(File* currentFile, char* target); //Mevcut dizin altında istenen dosyayı arayıp bulup yerini döndürür.
 // 2. Klasör İşlemleri
 //...
 

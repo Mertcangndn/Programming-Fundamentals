@@ -50,7 +50,7 @@ void listDirectory(File* currentFile){
     printf("\n\n------------------------------\n");
 }
 
-void listAllDirectory(File* root){  //Kaç boşluk bırakıldığına dair bir log tutulmalı, ona göre her recursive bittiğinde geri gelinmeli ("\b")
+void listAllDirectory(File* root, int* spaceCounter){  // [Yapılacak] Kaç boşluk bırakıldığına dair bir log tutulmalı, ona göre her recursive bittiğinde geri gelinmeli ("\b")
     File* tempNode = root;
 
     //BASE CASE
@@ -66,16 +66,37 @@ void listAllDirectory(File* root){  //Kaç boşluk bırakıldığına dair bir l
     }
 
     if(tempNode->child!=NULL){
-        printf("\n  \\");
-        listAllDirectory(tempNode->child);
-    }else{
-        printf("\n  |");    //2 boşluklu
-        listAllDirectory(tempNode->sibling);
+        for(int i=0 ; i<spaceCounter ; i++)printf(" "); //Boşluk Bırakıcı
+        spaceCounter++;
+        printf("\n\\");
+        listAllDirectory(tempNode->child,spaceCounter);
+    }
+    
+    if(tempNode->sibling!=NULL){
+        for(int i=0 ; i<spaceCounter ; i++)printf(""); //Boşluk Bırakıcı
+        spaceCounter--;
+        printf("\n|");    //2 boşluklu
+        listAllDirectory(tempNode->sibling,spaceCounter);
     }
 
     
 }
 
 File* changeDirectory(File* currentFile, char* target){
+    File* tempNode = currentFile;
+
+    //Base case
+    if(strcmp(tempNode->name,target)){
+        return tempNode;
+    }
+
+    if(tempNode->child!=NULL){ //Eğer alt klasör varsa alta in
+        changeDirectory(tempNode->child,target);
+    }
     
+    if(tempNode->sibling!=NULL){    //Eğer aynı seviyede başka klasör varsa diğerine geç
+        changeDirectory(tempNode->sibling,target);
+    }
+
+    return NULL;
 }
