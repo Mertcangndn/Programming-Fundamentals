@@ -2,7 +2,7 @@
 
 int main(void){
     int number;
-    loadingScreen();    //test aşamasında kolayca çalıştırıp denemek için yorum satırına alınabilir.
+    //loadingScreen();    //test aşamasında kolayca çalıştırıp denemek için yorum satırına alınabilir.
     menu();
 
 

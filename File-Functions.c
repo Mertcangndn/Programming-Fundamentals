@@ -55,7 +55,7 @@ void listAllDirectory(File* root){  //Kaç boşluk bırakıldığına dair bir l
 
     //BASE CASE
     if (tempNode == NULL) {
-        printf("SON");
+        printf("\n SON");
         return;
     }
 
@@ -73,5 +73,9 @@ void listAllDirectory(File* root){  //Kaç boşluk bırakıldığına dair bir l
         listAllDirectory(tempNode->sibling);
     }
 
+    
+}
+
+File* changeDirectory(File* currentFile, char* target){
     
 }
