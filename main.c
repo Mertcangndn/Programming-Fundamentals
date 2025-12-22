@@ -4,7 +4,7 @@ int main(void){
     int choice;
     char fileName[MAX_FILENAME];
     
-    //loadingScreen();    //test aşamasında kolayca çalıştırıp denemek için yorum satırına alınabilir.
+    loadingScreen();    //test aşamasında kolayca çalıştırıp denemek için yorum satırına alınabilir.
     // menu();
 
     // ------ DOSYA YAPISI OLUŞTURMA (Derin Hiyerarşi) -------
