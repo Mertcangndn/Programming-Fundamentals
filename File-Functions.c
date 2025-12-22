@@ -16,7 +16,7 @@ File* createFile(char* name,int isFolder){
 }
 
 // DOSYAYI GRAFA EKLEME
-void addFile(File* currentFile, char* name, int isFolder){
+void addFile(File* currentFile, char* name, int isFolder){ //Burası degisebilir sona kucuk bir ekleme(Eray)
     
     File* newFile = createFile(name, isFolder); //Yeni Dosya Oluşturma
     
@@ -106,7 +106,7 @@ void listDirectory(File* currentFile){
     printf("\n=====================================\n");
 }
 
-File* changeDirectory(File* currentFile, char* target){
+File* changeDirectory(File* currentFile, char* target){ // Burasi degisebilir(Eray)
     File* tempNode = currentFile;
 
     //Base case
