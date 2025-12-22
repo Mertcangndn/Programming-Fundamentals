@@ -20,6 +20,5 @@
 // Parlak Beyaz         =   15
 
 void color(int code) {
-    // 7 = Beyaz (Normal), 10 = Açık Yeşil, 12 = Açık Kırmızı, 14 = Sarı
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), code);
 }

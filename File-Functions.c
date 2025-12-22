@@ -6,6 +6,8 @@ File* createFile(char* name,int isFolder){
 
     strcpy(newFile->name,name);
     newFile->isFolder=isFolder;
+    newFile->deletedTime = 0;           // 0 = aktif dosya (silinmemiş)
+    newFile->originalPath[0] = '\0';    // Başlangıçta boş
     newFile->child=NULL;
     newFile->parent=NULL;
     newFile->sibling=NULL;
@@ -25,65 +27,85 @@ void addFile(File* currentFile, char* name, int isFolder){
 
 }
 
-// Bulunulan dizinin child dosyalarını listelemekte kullanılır.
-void listDirectory(File* currentFile){
 
-    File* tempNode = currentFile->child;
+// ============================================================
+// 
+// listDirectory() fonksiyonu Volkan Taştemir tarafından güncellendi.
+// 
+// DEĞİŞİKLİK NEDENİ:
+// - Geri dönüşüm kutusunu test ederken dizin yapısını görmemiz gerekiyordu
+// - Eski versiyon düz liste halinde gösteriyordu, hiyerarşi anlaşılmıyordu
+// - Yeni versiyon ağaç (tree) görünümünde gösteriyor
+//
+// YAPILAN DEĞİŞİKLİKLER:
+// - printTreeSimple() yardımcı fonksiyonu eklendi
+// - listDirectory() tamamen yeniden yazıldı
+// - Klasörler [köşeli parantez] içinde gösteriliyor
+// - Alt klasörler girintili şekilde listeleniyor
+//
+// ESKİ VERSİYONU GERİ ALMAK İSTERSENİZ:
+// Bu bloğu silin ve eski kodunuzu geri koyun.
+// ============================================================
+
+// Yardımcı: Ağaç yapısını yazdırır
+void printTreeSimple(File* node, char* prefix, int isLast) {
+    if (node == NULL) return;
     
-    if (tempNode == NULL) {
-        printf("(Klasor Bos)\n");
-        return;
+    // Mevcut satırı yazdır
+    printf("%s", prefix);
+    printf("%s", isLast ? "+-- " : "|-- ");
+    
+    if (node->isFolder) {
+        printf("[%s]\n", node->name);
+    } else {
+        printf("%s\n", node->name);
     }
-
-    printf("\n%s\n  \\", currentFile->name);    //2 boşluklu
     
-    while(tempNode!=NULL){
-        printf("\n  |");    //2 boşluklu
-        if(tempNode->isFolder){
-            printf("\n  [Klasor]    %s",tempNode->name);    //2 boşluklu
-        }else{
-            printf("\n  [Dosya]     %s",tempNode->name);    //2 boşluklu
+    // Yeni prefix oluştur (child'lar için)
+    char newPrefix[500];
+    strcpy(newPrefix, prefix);
+    strcat(newPrefix, isLast ? "    " : "|   ");
+    
+    // Eğer klasörse, child'ları yazdır
+    if (node->isFolder && node->child != NULL) {
+        File* child = node->child;
+        while (child != NULL) {
+            int childIsLast = (child->sibling == NULL);
+            printTreeSimple(child, newPrefix, childIsLast);
+            child = child->sibling;
         }
-        tempNode = tempNode->sibling;
     }
-
-    printf("\n\n------------------------------\n");
 }
 
-// Bütün ağacı listelemekte kullanılır.
-void listAllDirectory(File* root, int* spaceCounter){  // [Yapılacak] Kaç boşluk bırakıldığına dair bir log tutulmalı, ona göre her recursive bittiğinde geri gelinmeli ("\b")
-    File* tempNode = root;
-
-    //BASE CASE
-    if (tempNode == NULL) {
-        printf("\n SON");
+void listDirectory(File* currentFile){
+    if (currentFile == NULL) {
+        printf("(Gecersiz dizin)\n");
         return;
     }
-
-    if(tempNode->isFolder){
-            printf("\n[Klasor]    %s",tempNode->name);
-    }else{
-            printf("\n[Dosya]     %s",tempNode->name);
-    }
-
-    if(tempNode->child!=NULL){
-        for(int i=0 ; i<spaceCounter ; i++)printf(" "); //Boşluk Bırakıcı
-        spaceCounter++;
-        printf("\n\\");
-        listAllDirectory(tempNode->child,spaceCounter);
+    
+    printf("\n");
+    printf("=====================================\n");
+    printf("          DIZIN YAPISI\n");
+    printf("=====================================\n\n");
+    
+    // Kök dizini yazdır
+    printf("[%s]\n", currentFile->name);
+    
+    // Alt öğeleri yazdır
+    if (currentFile->child == NULL) {
+        printf("    (bos)\n");
+    } else {
+        File* child = currentFile->child;
+        while (child != NULL) {
+            int isLast = (child->sibling == NULL);
+            printTreeSimple(child, "", isLast);
+            child = child->sibling;
+        }
     }
     
-    if(tempNode->sibling!=NULL){
-        for(int i=0 ; i<spaceCounter ; i++)printf(""); //Boşluk Bırakıcı
-        spaceCounter--;
-        printf("\n|");    //2 boşluklu
-        listAllDirectory(tempNode->sibling,spaceCounter);
-    }
-
-    
+    printf("\n=====================================\n");
 }
 
-// Adı girilen dizini bulmakta da kullanılır.
 File* changeDirectory(File* currentFile, char* target){
     File* tempNode = currentFile;
 
@@ -102,3 +124,4 @@ File* changeDirectory(File* currentFile, char* target){
 
     return NULL;
 }
+
