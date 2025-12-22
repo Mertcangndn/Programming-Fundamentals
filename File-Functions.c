@@ -152,3 +152,12 @@ File* changeDirectory(File* currentFile, char* target){
     return NULL;
 }
 
+//Mevcut dizinin yolunu cmd'deki gibi yazdırmak için kullanılan recursive fonksiyon
+void directoryPrinter(File* currentFile){
+    File* tempNode = currentFile;
+    if(tempNode==NULL){
+        return;
+    }
+    directoryPrinter(tempNode);
+    printf("/%s",tempNode->name);
+}

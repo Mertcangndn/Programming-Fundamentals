@@ -9,17 +9,21 @@ void menu(void){
     File* root = createFile("C:",1);
     defaultPath(root);
 
-    // Geri dönüşüm kutusunu başlat (TEST için 30 saniye timeout)
+    //Geri dönüşüm kutusunu başlat (TEST için 30 saniye timeout)
     RecycleBin* bin = initRecycleBin(30);
+
+    File* currentFile = root;   //Mevcutta bulunulan dizini tutan node
 
     //Asıl menü kısmı
     while(1) {
         // Otomatik temizlik - her döngüde sessizce kontrol et
         autoCleanRecycleBin(bin);
         
-        printf("\n\n===== GERI DONUSUM KUTUSU TEST MENUSU =====\n");
-        printf("1. Mevcut Dizini Listele\n");
-        printf("2. Dosya Sil (Geri Donusum Kutusuna Tasi)\n");
+        printf("\n\n======== FILE MANAGEMENT SYSTEM ========\n");
+        printf("Current Folder: ");directoryPrinter(currentFile);
+        printf("\n============================================\n");
+        printf("1. Show Current Subdirectory\n");
+        printf("2. Delete File\n");
         printf("3. Geri Donusum Kutusunu Listele\n");
         printf("4. Dosyayi Geri Yukle\n");
         printf("5. Cikis\n");
@@ -30,7 +34,7 @@ void menu(void){
 
         switch(choice) {
             case 1:
-                printf("\n--- MEVCUT DIZIN ---\n");
+                printf("\n--- CURRENT ---\n");
                 listDirectory(root);
                 break;
                 

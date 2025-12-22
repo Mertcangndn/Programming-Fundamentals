@@ -68,6 +68,7 @@ void addFile(File* currentFile, char* name, int isFolder); //Dosyayı grafa ekle
 void listDirectory(File* currentFile);   // [DEĞİŞTİ - Volkan] Ağaç görünümü eklendi, File-Functions.c'deki yorumu okuyun
 void listAllDirectory(File* root, int spaceCounter);  // [DEĞİŞTİ - Volkan] int* -> int olarak düzeltildi, yorumu okuyun
 File* changeDirectory(File* currentFile, char* target); //Mevcut dizin altında istenen dosyayı arayıp bulup yerini döndürür.
+void directoryPrinter(File* currentFile); //Mevcut dizinin yolunu yazdırmaya yarayan fonksiyon (direkt çıktı verir)
 
 
 // 3. Geri Dönüşüm Kutusu İşlemleri
