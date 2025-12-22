@@ -56,24 +56,6 @@ void addFile(File* currentFile, char* name, int isFolder){ //Burası degisebilir
 }
 
 
-// ============================================================
-// 
-// listDirectory() fonksiyonu Volkan Taştemir tarafından güncellendi.
-// 
-// DEĞİŞİKLİK NEDENİ:
-// - Geri dönüşüm kutusunu test ederken dizin yapısını görmemiz gerekiyordu
-// - Eski versiyon düz liste halinde gösteriyordu, hiyerarşi anlaşılmıyordu
-// - Yeni versiyon ağaç (tree) görünümünde gösteriyor
-//
-// YAPILAN DEĞİŞİKLİKLER:
-// - printTreeSimple() yardımcı fonksiyonu eklendi
-// - listDirectory() tamamen yeniden yazıldı
-// - Klasörler [köşeli parantez] içinde gösteriliyor
-// - Alt klasörler girintili şekilde listeleniyor
-//
-// ESKİ VERSİYONU GERİ ALMAK İSTERSENİZ:
-// Bu bloğu silin ve eski kodunuzu geri koyun.
-// ============================================================
 
 // Yardımcı: Ağaç yapısını yazdırır
 void printTreeSimple(File* node, char* prefix, int isLast) {

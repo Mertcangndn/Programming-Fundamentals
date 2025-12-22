@@ -60,6 +60,7 @@ typedef struct HashNode {
 void menu(void);   // gerçek komut satırı menüsü
 void loadingScreen(void); //loading screen için ayrı fonksiyon (test açamasında kolayca kaldırabilmek için)
 void color(int code);   //CMD Üzerindeki yazıların rengini değiştirmek için kullanılan fonksiyon. Renk kodlarını görmek için "../color.c" altına bakılabilir.
+void defaultPath(File* root); //Proje açıldığında halihazırda bir dizin olmasını sağlar
 
 // 2. Dosya İşlemleri
 File* createFile(char* name,int isFolder);  //Node oluşturma (addFile içinde kendinden çalışıyor.)

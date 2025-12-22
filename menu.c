@@ -7,93 +7,12 @@ void menu(void){
     char fileName[MAX_FILENAME];
     
     File* root = createFile("C:",1);
-    
-    // === 1. SEVİYE: Root altındaki klasörler ve dosyalar ===
-    File* odevler = createFile("Odevler", 1);
-    File* oyunlar = createFile("Oyunlar", 1);
-    File* muzikler = createFile("Muzikler", 1);
-    File* notlar = createFile("notlar.txt", 0);
-    File* resim = createFile("resim.jpg", 0);
-    
-    // Root'un child zinciri: Odevler -> Oyunlar -> Muzikler -> notlar -> resim
-    root->child = odevler;
-    odevler->parent = root;
-    odevler->sibling = oyunlar;
-    oyunlar->parent = root;
-    oyunlar->sibling = muzikler;
-    muzikler->parent = root;
-    muzikler->sibling = notlar;
-    notlar->parent = root;
-    notlar->sibling = resim;
-    resim->parent = root;
-    
-    // === 2. SEVİYE: Odevler klasörü içeriği ===
-    File* veriYapilari = createFile("VeriYapilari", 1);
-    File* algoritma = createFile("Algoritma", 1);
-    File* odevListesi = createFile("odev_listesi.docx", 0);
-    
-    odevler->child = veriYapilari;
-    veriYapilari->parent = odevler;
-    veriYapilari->sibling = algoritma;
-    algoritma->parent = odevler;
-    algoritma->sibling = odevListesi;
-    odevListesi->parent = odevler;
-    
-    // === 3. SEVİYE: VeriYapilari klasörü içeriği ===
-    File* proje1 = createFile("Proje1", 1);
-    File* grafOdev = createFile("graf_odev.c", 0);
-    File* stackOdev = createFile("stack_odev.c", 0);
-    
-    veriYapilari->child = proje1;
-    proje1->parent = veriYapilari;
-    proje1->sibling = grafOdev;
-    grafOdev->parent = veriYapilari;
-    grafOdev->sibling = stackOdev;
-    stackOdev->parent = veriYapilari;
-    
-    // === 4. SEVİYE: Proje1 klasörü içeriği ===
-    File* mainC = createFile("main.c", 0);
-    File* headerH = createFile("header.h", 0);
-    File* readme = createFile("README.md", 0);
-    
-    proje1->child = mainC;
-    mainC->parent = proje1;
-    mainC->sibling = headerH;
-    headerH->parent = proje1;
-    headerH->sibling = readme;
-    readme->parent = proje1;
-    
-    // === 2. SEVİYE: Oyunlar klasörü içeriği ===
-    File* gta5 = createFile("GTA5", 1);
-    File* minecraft = createFile("Minecraft", 1);
-    
-    oyunlar->child = gta5;
-    gta5->parent = oyunlar;
-    gta5->sibling = minecraft;
-    minecraft->parent = oyunlar;
-    
-    // === 3. SEVİYE: GTA5 klasörü içeriği ===
-    File* gtaExe = createFile("gta5.exe", 0);
-    File* saves = createFile("saves", 1);
-    
-    gta5->child = gtaExe;
-    gtaExe->parent = gta5;
-    gtaExe->sibling = saves;
-    saves->parent = gta5;
-    
-    // === 2. SEVİYE: Muzikler klasörü içeriği ===
-    File* rock = createFile("rock.mp3", 0);
-    File* pop = createFile("pop.mp3", 0);
-    
-    muzikler->child = rock;
-    rock->parent = muzikler;
-    rock->sibling = pop;
-    pop->parent = muzikler;
+    defaultPath(root);
 
     // Geri dönüşüm kutusunu başlat (TEST için 30 saniye timeout)
     RecycleBin* bin = initRecycleBin(30);
 
-    // ------ TEST MENÜSÜ -------
+    //Asıl menü kısmı
     while(1) {
         // Otomatik temizlik - her döngüde sessizce kontrol et
         autoCleanRecycleBin(bin);
@@ -140,4 +59,73 @@ void menu(void){
         }
     }
     getch();
+}
+
+void defaultPath(File* root){
+    File* odevler = createFile("Odevler", 1);
+    File* oyunlar = createFile("Oyunlar", 1);
+    File* muzikler = createFile("Muzikler", 1);
+    File* notlar = createFile("notlar.txt", 0);
+    File* resim = createFile("resim.jpg", 0);
+    root->child = odevler;
+    odevler->parent = root;
+    odevler->sibling = oyunlar;
+    oyunlar->parent = root;
+    oyunlar->sibling = muzikler;
+    muzikler->parent = root;
+    muzikler->sibling = notlar;
+    notlar->parent = root;
+    notlar->sibling = resim;
+    resim->parent = root;
+
+    File* veriYapilari = createFile("VeriYapilari", 1);
+    File* algoritma = createFile("Algoritma", 1);
+    File* odevListesi = createFile("odev_listesi.docx", 0);
+    odevler->child = veriYapilari;
+    veriYapilari->parent = odevler;
+    veriYapilari->sibling = algoritma;
+    algoritma->parent = odevler;
+    algoritma->sibling = odevListesi;
+    odevListesi->parent = odevler;
+
+    File* proje1 = createFile("Proje1", 1);
+    File* grafOdev = createFile("graf_odev.c", 0);
+    File* stackOdev = createFile("stack_odev.c", 0);
+    veriYapilari->child = proje1;
+    proje1->parent = veriYapilari;
+    proje1->sibling = grafOdev;
+    grafOdev->parent = veriYapilari;
+    grafOdev->sibling = stackOdev;
+    stackOdev->parent = veriYapilari;
+
+    File* mainC = createFile("main.c", 0);
+    File* headerH = createFile("header.h", 0);
+    File* readme = createFile("README.md", 0);
+    proje1->child = mainC;
+    mainC->parent = proje1;
+    mainC->sibling = headerH;
+    headerH->parent = proje1;
+    headerH->sibling = readme;
+    readme->parent = proje1;
+    
+    File* gta5 = createFile("GTA5", 1);
+    File* minecraft = createFile("Minecraft", 1);
+    oyunlar->child = gta5;
+    gta5->parent = oyunlar;
+    gta5->sibling = minecraft;
+    minecraft->parent = oyunlar;
+    
+    File* gtaExe = createFile("gta5.exe", 0);
+    File* saves = createFile("saves", 1);
+    gta5->child = gtaExe;
+    gtaExe->parent = gta5;
+    gtaExe->sibling = saves;
+    saves->parent = gta5;
+
+    File* rock = createFile("rock.mp3", 0);
+    File* pop = createFile("pop.mp3", 0);
+    muzikler->child = rock;
+    rock->parent = muzikler;
+    rock->sibling = pop;
+    pop->parent = muzikler;
 }
