@@ -8,6 +8,7 @@
 #include <conio.h> //CLI Menü için kütüphane
 #include <windows.h>
 #include <time.h>   // Zaman işlemleri için (Geri Dönüşüm Kutusu)
+//==========================================================================================================================================
 
 
 
@@ -15,7 +16,7 @@
 #define MAX_FILENAME 100
 #define MAX_PATH_LENGTH 260         // Dosya yolu maksimum uzunluğu
 #define RECYCLE_TIMEOUT 604800      // 7 gün (saniye cinsinden) - Otomatik temizlik süresi
-
+//==========================================================================================================================================
 
 
 // Struct'lar
@@ -41,22 +42,23 @@ typedef struct RecycleBin{
     int itemCount;          // Geri dönüşüm kutusundaki dosya sayısı
     int timeoutSeconds;     // Otomatik temizlik süresi (saniye)
 }RecycleBin;
+//==========================================================================================================================================
 
 
 
 // Fonksiyon Prototiplerini (İmzalarını Buraya Yazalım)
+// 1. Genel
 void menu(void);   // gerçek komut satırı menüsü
 void loadingScreen(void); //loading screen için ayrı fonksiyon (test açamasında kolayca kaldırabilmek için)
 void color(int code);   //CMD Üzerindeki yazıların rengini değiştirmek için kullanılan fonksiyon. Renk kodlarını görmek için "../color.c" altına bakılabilir.
 
-// 1. Dosya İşlemleri
+// 2. Dosya İşlemleri
 File* createFile(char* name,int isFolder);  //Node oluşturma (addFile içinde kendinden çalışıyor.)
 void addFile(File* currentFile, char* name, int isFolder); //Dosyayı grafa ekleme
 void listDirectory(File* currentFile);   // [DEĞİŞTİ - Volkan] Ağaç görünümü eklendi, File-Functions.c'deki yorumu okuyun
 void listAllDirectory(File* root, int spaceCounter);  // [DEĞİŞTİ - Volkan] int* -> int olarak düzeltildi, yorumu okuyun
 File* changeDirectory(File* currentFile, char* target); //Mevcut dizin altında istenen dosyayı arayıp bulup yerini döndürür.
-// 2. Klasör İşlemleri
-//...
+
 
 // 3. Geri Dönüşüm Kutusu İşlemleri
 int countChildren(File* file);                                          // Klasör altındaki dosya sayısını hesaplar
@@ -68,5 +70,6 @@ int restoreFile(RecycleBin* bin, char* fileName, File* root);           // Geri 
 void autoCleanRecycleBin(RecycleBin* bin);                              // Otomatik temizlik (zaman aşımı)
 void freeFile(File* file);                                              // Bellek temizleme (recursive)
 void listRecycleBin(RecycleBin* bin);                                   // Geri dönüşüm kutusunu listeleme
+//==========================================================================================================================================
 
 #endif
