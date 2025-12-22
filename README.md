@@ -31,6 +31,16 @@ gcc main.c File-Functions.c -o test.exe
 ./test.exe
 ```
 
+### Derleme Seçenekleri
+
+| Durum | Komut |
+|-------|-------|
+| **Sadece Geri Dönüşüm Kutusu Testi** | `gcc main.c File-Functions.c -o test.exe` |
+| **Tüm Özellikler (menü, loading, renk)** | `gcc main.c File-Functions.c menu.c loading.c color.c -o test.exe` |
+
+> **Not:** `main.c`'de `menu()` ve `loadingScreen()` fonksiyonları yorum satırında. Bunları kullanmak isterseniz yorumu kaldırın ve tüm dosyaları derleyin.
+
+
 ## 📋 Özellikler
 
 ### Geri Dönüşüm Kutusu Sistemi
