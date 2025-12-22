@@ -42,6 +42,16 @@ void addToHashTable(char* name, File* filePtr) {
 
 // DOSYAYI GRAFA EKLEME
 void addFile(File* currentFile, char* name, int isFolder){ //Burası degisebilir sona kucuk bir ekleme(Eray)
+
+    //Klasörde aynı isimde başka dosya var mı kontrolü [EKLEME - MERTCAN]
+    File* tempNode = currentFile->child;
+    while(tempNode!=NULL){
+        if(strcmp(tempNode->name,name)==0){ //isimler aynıysa
+            printf("\n\nMevcut Dizinde Ayni Isimde Baska Bir Dosya Var!\n\n");
+            return;
+        }
+        tempNode=tempNode->sibling;
+    }
     
     File* newFile = createFile(name, isFolder); //Yeni Dosya Oluşturma
     
@@ -57,7 +67,7 @@ void addFile(File* currentFile, char* name, int isFolder){ //Burası degisebilir
 
 
 
-// Yardımcı: Ağaç yapısını yazdırır
+// Ağaç yapısını yazdırır
 void printTreeSimple(File* node, char* prefix, int isLast) {
     if (node == NULL) return;
     
@@ -117,6 +127,11 @@ void listDirectory(File* currentFile){
 }
 
 File* changeDirectory(File* currentFile, char* target){
+
+    //Üst dizine dönme isteği kontrolü [EKLEME - MERTCAN]
+    if(currentFile->parent != NULL && (strcmp(target,"..")==0 || strcmp(target,currentFile->parent->name)==0)){
+        return currentFile->parent;
+    }
     
     // 1. Hedef ismin hash değerini bul
     unsigned int index = hash(target);
@@ -152,12 +167,92 @@ File* changeDirectory(File* currentFile, char* target){
     return NULL;
 }
 
+//Hash table ile rastgele bir yerdeki dosya bulunabilir [EKLEME - MERTCAN]
+File* findDirectory(char* target){
+    
+    // 1. Hedef ismin hash değerini bul
+    unsigned int index = hash(target);
+    
+    // 2. O indeksteki listeyi getir
+    HashNode* temp = hashTable[index];
+
+    // 3. Hash zincirinde (Linked List) arama yap
+    while(temp != NULL){
+        
+        // İsim eşleşiyor mu?
+        if(strcmp(temp->name, target) == 0){
+            return temp->filePtr; // Hedef klasörü döndür
+        }
+        temp = temp->next; // Zincirdeki sonraki elemana bak
+    }
+
+    printf("\n\nDOSYA BULUNAMADI!\n\n");
+    return NULL;
+}
+
+//Renkli yazdırmada kullanılmak için istediğimiz dosya yolunun üzerinde olup olmadığını kontrol eden fonksiyon [EKLEME - MERTCAN]
+int isOnPath(File* node, File* target) {
+
+    if (node == target) return 1;
+    
+    //Target'tın öncesini kontrol etme
+    File* temp = target->parent;
+    while (temp != NULL) {
+        if (temp == node) return 1;
+        temp = temp->parent;
+    }
+    
+    return 0;
+}
+
+//renkli şekilde dizin yazdıran fonksiyon (printSimpleTree() fonksiyonunun modifiye edilmiş halidir.) [EKLEME - MERTCAN]
+void printTreeColored(File* node, char* prefix, int isLast, File* target) {
+    if (node == NULL) return;
+    
+    printf("%s", prefix);
+    printf("%s", isLast ? "+-- " : "|-- ");
+    
+    if(isOnPath(node,target)){
+        color(2);
+    }
+    if (node->isFolder) {
+        printf("[%s]\n", node->name);
+    } else {
+        printf("%s\n", node->name);
+    }
+    if(isOnPath(node,target)){
+        color(7);
+    }
+    
+    char newPrefix[500];
+    strcpy(newPrefix, prefix);
+    strcat(newPrefix, isLast ? "    " : "|   ");
+    
+    // Eğer klasörse, child'ları yazdır
+    if (node->isFolder && node->child != NULL) {
+        File* child = node->child;
+        while (child != NULL) {
+            int childIsLast = (child->sibling == NULL);
+            printTreeColored(child, newPrefix, childIsLast, target);
+            child = child->sibling;
+        }
+    }
+}
+
 //Mevcut dizinin yolunu cmd'deki gibi yazdırmak için kullanılan recursive fonksiyon
 void directoryPrinter(File* currentFile){
     File* tempNode = currentFile;
     if(tempNode==NULL){
         return;
     }
-    directoryPrinter(tempNode);
+    directoryPrinter(tempNode->parent);
     printf("/%s",tempNode->name);
+}
+
+//Ağaçtaki tüm dosyaları gezip Hash Tablosuna ekleyen fonksiton
+void syncTreeToHash(File* node) {
+    if (node == NULL) return;
+    addToHashTable(node->name, node); 
+    syncTreeToHash(node->child);
+    syncTreeToHash(node->sibling);
 }

@@ -8,6 +8,7 @@ void menu(void){
     
     File* root = createFile("C:",1);
     defaultPath(root);
+    syncTreeToHash(root);
 
     //Geri dönüşüm kutusunu başlat (TEST için 30 saniye timeout)
     RecycleBin* bin = initRecycleBin(30);
@@ -19,14 +20,17 @@ void menu(void){
         // Otomatik temizlik - her döngüde sessizce kontrol et
         autoCleanRecycleBin(bin);
         
-        printf("\n\n======== FILE MANAGEMENT SYSTEM ========\n");
+        printf("\n\n========= Dosya Yonetim Sistemi =========\n");
         printf("Current Folder: ");directoryPrinter(currentFile);
         printf("\n============================================\n");
-        printf("1. Show Current Subdirectory\n");
-        printf("2. Delete File\n");
-        printf("3. Geri Donusum Kutusunu Listele\n");
-        printf("4. Dosyayi Geri Yukle\n");
-        printf("5. Cikis\n");
+        printf("1. Mevcut Altdizini Goruntule\n");
+        printf("2. Dosya veya Klasor Olustur\n");
+        printf("3. Dosya veya Klasor Sil\n");
+        printf("4. Dizin Degistir\n");
+        printf("5. Geri Donusum Kutusunu Listele\n");
+        printf("6. Dosyayi Geri Yukle\n");
+        printf("7. Dosya veya Klasor Bul\n");
+        printf("8. Cikis\n");
         printf("============================================\n");
         printf("Seciminiz: ");
         scanf("%d", &choice);
@@ -34,27 +38,60 @@ void menu(void){
 
         switch(choice) {
             case 1:
-                printf("\n--- CURRENT ---\n");
-                listDirectory(root);
+                printf("\n--- Mevcut Dizin ---\n");
+                listDirectory(currentFile);
+                break;
+            
+            case 2:
+                printf("\nDosya Ismi Giriniz: ");
+                scanf("%s",fileName);
+
+                if (strrchr(fileName, '.') != NULL) {   //isminde nokta varsa (code.py) dosya olarak, yoksa klasör olarak oluşturuyor.
+                    addFile(currentFile,fileName,0);
+                } else {
+                    addFile(currentFile,fileName,1);
+                }
                 break;
                 
-            case 2:
+            case 3:
                 printf("\nSilinecek dosya adi: ");
                 scanf("%s", fileName);
                 deleteFile(root, fileName, bin);
                 break;
+            
+            case 4:
+                printf("\nDosya Ismi Giriniz: ");
+                scanf("%s",fileName);
+                if(changeDirectory(root,fileName)){
+                    currentFile=changeDirectory(root,fileName);
+                }else{
+                    printf("\n\nGirilen Isimde Bir Dosya Bulunamadi!\n\n");
+                }
+                break;
                 
-            case 3:
+            case 5:
                 listRecycleBin(bin);
                 break;
                 
-            case 4:
+            case 6:
                 printf("\nGeri yuklenecek dosya adi: ");
                 scanf("%s", fileName);
                 restoreFile(bin, fileName, root);
                 break;
+            
+            case 7:
+                printf("\nAradiginiz Dosyanin Adini Giriniz: ");
+                scanf("%s", fileName);
+                File* foundFile = findDirectory(fileName);
+
+                if(foundFile!=NULL){
+                    printTreeColored(root, "", 1, foundFile);
+                }else{
+                    printf("[HATA] Dosya bulunamadi!\n");
+                }
+                break;
                 
-            case 5:
+            case 8:
                 printf("\nCikis yapiliyor...\n");
                 return;
                 

@@ -61,14 +61,17 @@ void menu(void);   // gerçek komut satırı menüsü
 void loadingScreen(void); //loading screen için ayrı fonksiyon (test açamasında kolayca kaldırabilmek için)
 void color(int code);   //CMD Üzerindeki yazıların rengini değiştirmek için kullanılan fonksiyon. Renk kodlarını görmek için "../color.c" altına bakılabilir.
 void defaultPath(File* root); //Proje açıldığında halihazırda bir dizin olmasını sağlar
+void syncTreeToHash(File* node); //Ağaçtaki tüm dosyaları gezip Hash Tablosuna ekleyen fonksiton
 
 // 2. Dosya İşlemleri
 File* createFile(char* name,int isFolder);  //Node oluşturma (addFile içinde kendinden çalışıyor.)
 void addFile(File* currentFile, char* name, int isFolder); //Dosyayı grafa ekleme
 void listDirectory(File* currentFile);   // [DEĞİŞTİ - Volkan] Ağaç görünümü eklendi, File-Functions.c'deki yorumu okuyun
-void listAllDirectory(File* root, int spaceCounter);  // [DEĞİŞTİ - Volkan] int* -> int olarak düzeltildi, yorumu okuyun
+void printTreeSimple(File* node, char* prefix, int isLast); //Ağaç yazdırmakta kullanılan fonksiyon
 File* changeDirectory(File* currentFile, char* target); //Mevcut dizin altında istenen dosyayı arayıp bulup yerini döndürür.
 void directoryPrinter(File* currentFile); //Mevcut dizinin yolunu yazdırmaya yarayan fonksiyon (direkt çıktı verir)
+File* findDirectory(char* target); //Hash table ile rastgele bir yerdeki dosya bulunabilir [EKLEME - MERTCAN]
+void printTreeColored(File* node, char* prefix, int isLast, File* target); //renkli şekilde dizin yazdıran fonksiyon (printSimpleTree() fonksiyonunun modifiye edilmiş halidir.) [EKLEME - MERTCAN]
 
 
 // 3. Geri Dönüşüm Kutusu İşlemleri
