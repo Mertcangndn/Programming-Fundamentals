@@ -16,6 +16,7 @@
 #define MAX_FILENAME 100
 #define MAX_PATH_LENGTH 260         // Dosya yolu maksimum uzunluğu
 #define RECYCLE_TIMEOUT 604800      // 7 gün (saniye cinsinden) - Otomatik temizlik süresi
+#define TABLE_SIZE 1009 // Hash tablosu boyutu
 //==========================================================================================================================================
 
 
@@ -44,6 +45,14 @@ typedef struct RecycleBin{
 }RecycleBin;
 //==========================================================================================================================================
 
+// Harici Hash Düğümü (File struct'ına dokunmamak için)
+typedef struct HashNode {
+    char name[MAX_FILENAME];
+    File* filePtr;          // Asıl File düğümüne işaret eder
+    struct HashNode* next;  // Çakışma (collision) olursa zincirleme için
+} HashNode;
+
+
 
 
 // Fonksiyon Prototiplerini (İmzalarını Buraya Yazalım)
@@ -71,5 +80,7 @@ void autoCleanRecycleBin(RecycleBin* bin);                              // Otoma
 void freeFile(File* file);                                              // Bellek temizleme (recursive)
 void listRecycleBin(RecycleBin* bin);                                   // Geri dönüşüm kutusunu listeleme
 //==========================================================================================================================================
+unsigned int hash(char *str);
+void addToHashTable(char* name, File* filePtr);
 
 #endif

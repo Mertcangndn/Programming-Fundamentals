@@ -15,6 +15,31 @@ File* createFile(char* name,int isFolder){
     return newFile;
 }
 
+
+ HashNode* hashTable[TABLE_SIZE];
+// Hash Fonksiyonu (Djb2)
+unsigned int hash(char *str) {
+    unsigned long hash = 5381;
+    int c;
+    while ((c = *str++))
+        hash = ((hash << 5) + hash) + c; 
+    return hash % TABLE_SIZE;
+}
+
+// Hash Tablosuna Ekleme Yardımcı Fonksiyonu
+void addToHashTable(char* name, File* filePtr) {
+    unsigned int index = hash(name);
+    
+    HashNode* newNode = (HashNode*)malloc(sizeof(HashNode));
+    strcpy(newNode->name, name);
+    newNode->filePtr = filePtr;
+    newNode->next = hashTable[index]; // Listenin başına ekle (chaining)
+    
+    hashTable[index] = newNode;
+
+    
+}
+
 // DOSYAYI GRAFA EKLEME
 void addFile(File* currentFile, char* name, int isFolder){ //Burası degisebilir sona kucuk bir ekleme(Eray)
     
@@ -25,6 +50,9 @@ void addFile(File* currentFile, char* name, int isFolder){ //Burası degisebilir
                                             //Yani, yeni dosya sibling zincirinin ilk elemanı olarak kaynak yapmış oldu.
     newFile->parent = currentFile;          //Geri dönmek gerekirse diye parent node kaydedildi.
 
+    // 2. YENİ KISIM: Dosyayı Hash Tablosuna Kaydet
+    // Artık aramalarda ağacı gezmek yerine buraya bakacağız.
+    addToHashTable(name, newFile);
 }
 
 
@@ -106,22 +134,39 @@ void listDirectory(File* currentFile){
     printf("\n=====================================\n");
 }
 
-File* changeDirectory(File* currentFile, char* target){ // Burasi degisebilir(Eray)
-    File* tempNode = currentFile;
-
-    //Base case
-    if(strcmp(tempNode->name,target)){
-        return tempNode;
-    }
-
-    if(tempNode->child!=NULL){ //Eğer alt klasör varsa alta in
-        changeDirectory(tempNode->child,target);
-    }
+File* changeDirectory(File* currentFile, char* target){
     
-    if(tempNode->sibling!=NULL){    //Eğer aynı seviyede başka klasör varsa diğerine geç
-        changeDirectory(tempNode->sibling,target);
+    // 1. Hedef ismin hash değerini bul
+    unsigned int index = hash(target);
+    
+    // 2. O indeksteki listeyi getir
+    HashNode* temp = hashTable[index];
+
+    // 3. Hash zincirinde (Linked List) arama yap
+    while(temp != NULL){
+        
+        // İsim eşleşiyor mu?
+        if(strcmp(temp->name, target) == 0){
+            
+            // KRİTİK KONTROL:
+            // Hash tablosu tüm sistemdeki "odev" klasörlerini getirir.
+            // Biz sadece ŞU ANKİ klasörün (currentFile) altındakini istiyoruz.
+            if(temp->filePtr->parent == currentFile){
+                
+                // Bulunan hedef klasör mü? (Dosyaya cd yapılamaz)
+                if(temp->filePtr->isFolder){
+                    return temp->filePtr; // Hedef klasörü döndür
+                } else {
+                    // Bulundu ama bir dosya, klasör değil.
+                    // İstersen burada NULL döndürebilir veya uyarı verebilirsin.
+                    return NULL; 
+                }
+            }
+        }
+        temp = temp->next; // Zincirdeki sonraki elemana bak
     }
 
+    // 4. Eğer döngü biterse dosya bu dizinde yok demektir.
     return NULL;
 }
 
