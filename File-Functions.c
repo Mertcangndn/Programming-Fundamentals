@@ -25,7 +25,7 @@ void addFile(File* currentFile, char* name, int isFolder){
 
 }
 
-
+// Bulunulan dizinin child dosyalarını listelemekte kullanılır.
 void listDirectory(File* currentFile){
 
     File* tempNode = currentFile->child;
@@ -50,6 +50,7 @@ void listDirectory(File* currentFile){
     printf("\n\n------------------------------\n");
 }
 
+// Bütün ağacı listelemekte kullanılır.
 void listAllDirectory(File* root, int* spaceCounter){  // [Yapılacak] Kaç boşluk bırakıldığına dair bir log tutulmalı, ona göre her recursive bittiğinde geri gelinmeli ("\b")
     File* tempNode = root;
 
@@ -82,6 +83,7 @@ void listAllDirectory(File* root, int* spaceCounter){  // [Yapılacak] Kaç boş
     
 }
 
+// Adı girilen dizini bulmakta da kullanılır.
 File* changeDirectory(File* currentFile, char* target){
     File* tempNode = currentFile;
 
