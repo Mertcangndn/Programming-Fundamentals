@@ -37,9 +37,10 @@ typedef struct File{
 
 }File;
 
-// Geri Dönüşüm Kutusu Graf Yapısı
+// Geri Dönüşüm Kutusu Kuyruk Yapısı (Queue)
 typedef struct RecycleBin{
-    File* root;             // Silinen dosyaların kök düğümü
+    File* root;             // Kuyruğun başı (front) - çıkış noktası
+    File* tail;             // Kuyruğun sonu (rear) - giriş noktası
     int itemCount;          // Geri dönüşüm kutusundaki dosya sayısı
     int timeoutSeconds;     // Otomatik temizlik süresi (saniye)
 }RecycleBin;

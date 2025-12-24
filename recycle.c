@@ -22,11 +22,12 @@ int countChildren(File* file) {
     return count;
 }
 
-// Geri dönüşüm kutusu başlatma
+// Geri dönüşüm kutusu başlatma (Kuyruk yapısı)
 RecycleBin* initRecycleBin(int timeoutSeconds) {
     RecycleBin* bin = malloc(sizeof(RecycleBin));
     
-    bin->root = NULL;
+    bin->root = NULL;   // Kuyruğun başı (front)
+    bin->tail = NULL;   // Kuyruğun sonu (rear)
     bin->itemCount = 0;
     bin->timeoutSeconds = timeoutSeconds;
     
@@ -122,13 +123,21 @@ int deleteFile(File* root, char* fileName, RecycleBin* bin) {
     // Orijinal yolu kaydet (geri yükleme için)
     buildPath(parent, current->originalPath);
     
-    // ---- GERİ DÖNÜŞÜM KUTUSUNA EKLE ----
-    // Geri dönüşüm kutusunun root'una ekle (en başa)
-    current->sibling = bin->root;
-    bin->root = current;
+    // ---- KUYRUĞA EKLE (ENQUEUE - Sona ekle) ----
+    current->sibling = NULL;  // Yeni eleman her zaman son olacak
+    
+    if (bin->root == NULL) {
+        // Kuyruk boşsa, hem root hem tail bu elemana işaret eder
+        bin->root = current;
+        bin->tail = current;
+    } else {
+        // Kuyruk doluysa, mevcut tail'in sibling'i yeni eleman olur
+        bin->tail->sibling = current;
+        bin->tail = current;
+    }
     bin->itemCount++;
     
-    printf("[SILINDI] '%s' geri donusum kutusuna tasindi.\n", fileName);
+    printf("[SILINDI] '%s' geri donusum kutusuna tasindi (kuyruga eklendi).\n", fileName);
     return 1;
 }
 
@@ -179,7 +188,13 @@ File* findFileByName(File* current, char* name) {
 // Geri dönüşüm kutusundaki dosyayı geri yükleme
 // Başarılı: 1, Başarısız: 0
 int restoreFile(RecycleBin* bin, char* fileName, File* root) {
-    if (bin == NULL || bin->root == NULL || root == NULL) {
+    if (bin == NULL || root == NULL) {
+        printf("[HATA] Geri donusum kutusu baslatilamadi!\n");
+        return 0;
+    }
+    
+    if (bin->root == NULL) {
+        printf("[HATA] Geri donusum kutusu bos! Geri yuklenecek dosya yok.\n");
         return 0;
     }
     
@@ -231,12 +246,24 @@ int restoreFile(RecycleBin* bin, char* fileName, File* root) {
         }
     }
     
-    // ---- GERİ DÖNÜŞÜM KUTUSUNDAN ÇIKAR ----
+    // ---- KUYRUKTAN ÇIKAR (DEQUEUE) ----
     if (previous == NULL) {
+        // Baştan çıkarıyoruz
         bin->root = current->sibling;
     } else {
         previous->sibling = current->sibling;
     }
+    
+    // Eğer çıkarılan eleman tail ise, tail'i güncelle
+    if (current == bin->tail) {
+        bin->tail = previous;
+    }
+    
+    // Kuyruk boşaldıysa tail'i de NULL yap
+    if (bin->root == NULL) {
+        bin->tail = NULL;
+    }
+    
     bin->itemCount--;
     
     // ---- ORİJİNAL KONUMA GERİ EKLE ----
@@ -274,7 +301,7 @@ void autoCleanRecycleBin(RecycleBin* bin) {
             
             File* toDelete = current;
             
-            // Listeden çıkar
+            // Kuyruktan çıkar
             if (previous == NULL) {
                 bin->root = current->sibling;
                 current = bin->root;
@@ -282,6 +309,17 @@ void autoCleanRecycleBin(RecycleBin* bin) {
                 previous->sibling = current->sibling;
                 current = previous->sibling;
             }
+            
+            // Eğer çıkarılan eleman tail ise, tail'i güncelle
+            if (toDelete == bin->tail) {
+                bin->tail = previous;
+            }
+            
+            // Kuyruk boşaldıysa tail'i de NULL yap
+            if (bin->root == NULL) {
+                bin->tail = NULL;
+            }
+            
             bin->itemCount--;
             
             // POSTFIX ile temizle ve belleği serbest bırak
