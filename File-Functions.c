@@ -16,7 +16,7 @@ File* createFile(char* name,int isFolder){
 }
 
 
- HashNode* hashTable[TABLE_SIZE];
+HashNode* hashTable[TABLE_SIZE];
 // Hash Fonksiyonu (Djb2)
 unsigned int hash(char *str) {
     unsigned long hash = 5381;
@@ -129,8 +129,17 @@ void listDirectory(File* currentFile){
 File* changeDirectory(File* currentFile, char* target){
 
     //Üst dizine dönme isteği kontrolü [EKLEME - MERTCAN]
-    if(currentFile->parent != NULL && (strcmp(target,"..")==0 || strcmp(target,currentFile->parent->name)==0)){
+    /*if(currentFile->parent != NULL && (strcmp(target,"..\n")==0 || strcmp(target,currentFile->parent->name)==0)){
         return currentFile->parent;
+    }*/
+
+    if(strcmp(target, "..") == 0) {
+        if(currentFile->parent != NULL) {
+            return currentFile->parent; // Başarılı, yukarı çık
+        } else {
+            printf("\n[BILGI] Zaten ana dizindesiniz (Root), daha yukari cikilamaz.\n");
+            return currentFile; // Hata vermemesi için "olduğun yeri" geri döndür.
+        }
     }
     
     // 1. Hedef ismin hash değerini bul
@@ -186,7 +195,7 @@ File* findDirectory(char* target){
         temp = temp->next; // Zincirdeki sonraki elemana bak
     }
 
-    printf("\n\nDOSYA BULUNAMADI!\n\n");
+    printf("\n[HATA] Dosya bulunamadi!\n");
     return NULL;
 }
 
@@ -245,14 +254,8 @@ void directoryPrinter(File* currentFile){
     if(tempNode==NULL){
         return;
     }
-    directoryPrinter(tempNode->parent);
+    if(tempNode->parent!=NULL){
+        directoryPrinter(tempNode->parent);
+    }
     printf("/%s",tempNode->name);
-}
-
-//Ağaçtaki tüm dosyaları gezip Hash Tablosuna ekleyen fonksiton
-void syncTreeToHash(File* node) {
-    if (node == NULL) return;
-    addToHashTable(node->name, node); 
-    syncTreeToHash(node->child);
-    syncTreeToHash(node->sibling);
 }

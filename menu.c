@@ -8,7 +8,6 @@ void menu(void){
     
     File* root = createFile("C:",1);
     defaultPath(root);
-    syncTreeToHash(root);
 
     //Geri dönüşüm kutusunu başlat (TEST için 30 saniye timeout)
     RecycleBin* bin = initRecycleBin(30);
@@ -38,11 +37,18 @@ void menu(void){
 
         switch(choice) {
             case 1:
+                system("cls");
                 printf("\n--- Mevcut Dizin ---\n");
                 listDirectory(currentFile);
+                printf("\nDevam Etmek icin Herhangi Bir Tusa Basin");
+                getch();
+                //system("pause");  //bu daha iyi ama türkçe olmadığı için manuel bir kod yazdım.
+                system("cls");
                 break;
             
             case 2:
+                system("cls");
+                printf("\n--- Dosya ve Klasor Olusturucu ---\n");
                 printf("\nDosya Ismi Giriniz: ");
                 scanf("%s",fileName);
 
@@ -51,44 +57,74 @@ void menu(void){
                 } else {
                     addFile(currentFile,fileName,1);
                 }
+                printf("Yeni Dosya Eklendi: ");directoryPrinter(findDirectory(fileName));
+                printf("\nDevam Etmek icin Herhangi Bir Tusa Basin");
+                getch();
+                system("cls");
                 break;
                 
             case 3:
+                system("cls");
+                printf("\n--- Dosya ve Klasor Silici ---\n");
                 printf("\nSilinecek dosya adi: ");
                 scanf("%s", fileName);
                 deleteFile(root, fileName, bin);
+                if(strcmp(fileName, currentFile->name)==0){
+                    currentFile=root;
+                    printf("\n[UYARI] Bulundugunuz klasoru sildiniz! Kok dizine donulecek.\n");
+                }
+                printf("\nDevam Etmek icin Herhangi Bir Tusa Basin");
+                getch();
+                system("cls");
                 break;
             
             case 4:
-                printf("\nDosya Ismi Giriniz: ");
+                system("cls");
+                printf("\n--- Dizin Degistirici ---\n");
+                printf("\nGitmek Istediginiz Klasorun Ismini Giriniz: ");
                 scanf("%s",fileName);
                 if(changeDirectory(root,fileName)){
                     currentFile=changeDirectory(root,fileName);
                 }else{
                     printf("\n\nGirilen Isimde Bir Dosya Bulunamadi!\n\n");
                 }
+                printf("\nDevam Etmek icin Herhangi Bir Tusa Basin");
+                getch();
+                system("cls");
                 break;
                 
             case 5:
+                system("cls");
                 listRecycleBin(bin);
+                printf("\nDevam Etmek icin Herhangi Bir Tusa Basin");
+                getch();
+                system("cls");
                 break;
                 
             case 6:
+                system("cls");
+                printf("\n--- Geri Yukleyici ---\n");
                 printf("\nGeri yuklenecek dosya adi: ");
                 scanf("%s", fileName);
                 restoreFile(bin, fileName, root);
+                printf("\nDevam Etmek icin Herhangi Bir Tusa Basin");
+                getch();
+                system("cls");
                 break;
             
             case 7:
+                system("cls");
+                printf("\n--- Dosya Bulucu ---\n");
                 printf("\nAradiginiz Dosyanin Adini Giriniz: ");
                 scanf("%s", fileName);
                 File* foundFile = findDirectory(fileName);
 
                 if(foundFile!=NULL){
                     printTreeColored(root, "", 1, foundFile);
-                }else{
-                    printf("[HATA] Dosya bulunamadi!\n");
                 }
+                printf("\nDevam Etmek icin Herhangi Bir Tusa Basin");
+                getch();
+                system("cls");
                 break;
                 
             case 8:
@@ -97,76 +133,66 @@ void menu(void){
                 
             default:
                 printf("\nGecersiz secim!\n");
+                printf("\nDevam Etmek icin Herhangi Bir Tusa Basin");
+                getch();
+                system("cls");
         }
     }
     getch();
 }
 
-void defaultPath(File* root){
-    File* odevler = createFile("Odevler", 1);
-    File* oyunlar = createFile("Oyunlar", 1);
-    File* muzikler = createFile("Muzikler", 1);
-    File* notlar = createFile("notlar.txt", 0);
-    File* resim = createFile("resim.jpg", 0);
-    root->child = odevler;
-    odevler->parent = root;
-    odevler->sibling = oyunlar;
-    oyunlar->parent = root;
-    oyunlar->sibling = muzikler;
-    muzikler->parent = root;
-    muzikler->sibling = notlar;
-    notlar->parent = root;
-    notlar->sibling = resim;
-    resim->parent = root;
+void defaultPath(File* root) {
+    // NOT: addFile fonksiyonu yeni dosyayı listenin EN BAŞINA ekler.
+    // Bu yüzden pointer'ı yakalamak için "root->child" dememiz yeterlidir.
 
-    File* veriYapilari = createFile("VeriYapilari", 1);
-    File* algoritma = createFile("Algoritma", 1);
-    File* odevListesi = createFile("odev_listesi.docx", 0);
-    odevler->child = veriYapilari;
-    veriYapilari->parent = odevler;
-    veriYapilari->sibling = algoritma;
-    algoritma->parent = odevler;
-    algoritma->sibling = odevListesi;
-    odevListesi->parent = odevler;
+    // 1. ODEVLER KLASÖRÜ VE ALTINDAKİLER
+    addFile(root, "Odevler", 1);
+    File* odevler = root->child; // Odevler node'unu yakaladık
 
-    File* proje1 = createFile("Proje1", 1);
-    File* grafOdev = createFile("graf_odev.c", 0);
-    File* stackOdev = createFile("stack_odev.c", 0);
-    veriYapilari->child = proje1;
-    proje1->parent = veriYapilari;
-    proje1->sibling = grafOdev;
-    grafOdev->parent = veriYapilari;
-    grafOdev->sibling = stackOdev;
-    stackOdev->parent = veriYapilari;
+        // 1.1 VeriYapilari
+        addFile(odevler, "VeriYapilari", 1);
+        File* veriYapilari = odevler->child;
 
-    File* mainC = createFile("main.c", 0);
-    File* headerH = createFile("header.h", 0);
-    File* readme = createFile("README.md", 0);
-    proje1->child = mainC;
-    mainC->parent = proje1;
-    mainC->sibling = headerH;
-    headerH->parent = proje1;
-    headerH->sibling = readme;
-    readme->parent = proje1;
-    
-    File* gta5 = createFile("GTA5", 1);
-    File* minecraft = createFile("Minecraft", 1);
-    oyunlar->child = gta5;
-    gta5->parent = oyunlar;
-    gta5->sibling = minecraft;
-    minecraft->parent = oyunlar;
-    
-    File* gtaExe = createFile("gta5.exe", 0);
-    File* saves = createFile("saves", 1);
-    gta5->child = gtaExe;
-    gtaExe->parent = gta5;
-    gtaExe->sibling = saves;
-    saves->parent = gta5;
+            // 1.1.1 Proje1 ve Dosyaları
+            addFile(veriYapilari, "Proje1", 1);
+            File* proje1 = veriYapilari->child;
+            addFile(proje1, "main.c", 0);
+            addFile(proje1, "header.h", 0);
+            addFile(proje1, "README.md", 0);
 
-    File* rock = createFile("rock.mp3", 0);
-    File* pop = createFile("pop.mp3", 0);
-    muzikler->child = rock;
-    rock->parent = muzikler;
-    rock->sibling = pop;
-    pop->parent = muzikler;
+            // 1.1.2 Diğer VeriYapilari Dosyaları
+            addFile(veriYapilari, "graf_odev.c", 0);
+            addFile(veriYapilari, "stack_odev.c", 0);
+
+        // 1.2 Algoritma
+        addFile(odevler, "Algoritma", 1);
+
+        // 1.3 Odev Listesi
+        addFile(odevler, "odev_listesi.docx", 0);
+
+
+    // 2. OYUNLAR KLASÖRÜ VE ALTINDAKİLER
+    addFile(root, "Oyunlar", 1);
+    File* oyunlar = root->child; // Oyunlar node'unu yakaladık
+
+        // 2.1 GTA5
+        addFile(oyunlar, "GTA5", 1);
+        File* gta5 = oyunlar->child;
+        addFile(gta5, "gta5.exe", 0);
+        addFile(gta5, "saves", 1);
+
+        // 2.2 Minecraft
+        addFile(oyunlar, "Minecraft", 1);
+
+
+    // 3. MUZİKLER KLASÖRÜ
+    addFile(root, "Muzikler", 1);
+    File* muzikler = root->child;
+    addFile(muzikler, "rock.mp3", 0);
+    addFile(muzikler, "pop.mp3", 0);
+
+
+    // 4. ROOT'TAKİ DİĞER DOSYALAR
+    addFile(root, "notlar.txt", 0);
+    addFile(root, "resim.jpg", 0);
 }
