@@ -157,7 +157,7 @@ File* changeDirectory(File* currentFile, char* target){
             // KRİTİK KONTROL:
             // Hash tablosu tüm sistemdeki "odev" klasörlerini getirir.
             // Biz sadece ŞU ANKİ klasörün (currentFile) altındakini istiyoruz.
-            if(temp->filePtr->parent == currentFile){
+            
                 
                 // Bulunan hedef klasör mü? (Dosyaya cd yapılamaz)
                 if(temp->filePtr->isFolder){
@@ -167,7 +167,6 @@ File* changeDirectory(File* currentFile, char* target){
                     // İstersen burada NULL döndürebilir veya uyarı verebilirsin.
                     return NULL; 
                 }
-            }
         }
         temp = temp->next; // Zincirdeki sonraki elemana bak
     }
