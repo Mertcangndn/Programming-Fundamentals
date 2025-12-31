@@ -132,15 +132,6 @@ File* changeDirectory(File* currentFile, char* target){
     /*if(currentFile->parent != NULL && (strcmp(target,"..\n")==0 || strcmp(target,currentFile->parent->name)==0)){
         return currentFile->parent;
     }*/
-
-    if(strcmp(target, "..") == 0) {
-        if(currentFile->parent != NULL) {
-            return currentFile->parent; // Başarılı, yukarı çık
-        } else {
-            printf("\n[BILGI] Zaten ana dizindesiniz (Root), daha yukari cikilamaz.\n");
-            return currentFile; // Hata vermemesi için "olduğun yeri" geri döndür.
-        }
-    }
     
     // 1. Hedef ismin hash değerini bul
     unsigned int index = hash(target);

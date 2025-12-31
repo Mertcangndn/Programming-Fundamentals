@@ -83,11 +83,19 @@ void menu(void){
                 printf("\n--- Dizin Degistirici ---\n");
                 printf("\nGitmek Istediginiz Klasorun Ismini Giriniz: ");
                 scanf("%s",fileName);
-                if(changeDirectory(root,fileName)){
+
+                if(strcmp(fileName, "..") == 0){
+                    if(currentFile->parent!=NULL){
+                        currentFile=currentFile->parent;
+                    }else{
+                        printf("\n\n[Bilgi] Ana Dizindesiniz, Daha Uste Cikamassiniz.\n\n");
+                    }
+                }else if(changeDirectory(root,fileName)!=NULL){
                     currentFile=changeDirectory(root,fileName);
                 }else{
                     printf("\n\nGirilen Isimde Bir Dosya Bulunamadi!\n\n");
                 }
+
                 printf("\nDevam Etmek icin Herhangi Bir Tusa Basin");
                 getch();
                 system("cls");
