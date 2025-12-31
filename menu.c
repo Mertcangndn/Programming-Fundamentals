@@ -20,7 +20,9 @@ void menu(void){
         autoCleanRecycleBin(bin);
         
         printf("\n\n========= Dosya Yonetim Sistemi =========\n");
+        color(4);
         printf("Current Folder: ");directoryPrinter(currentFile);
+        color(7);
         printf("\n============================================\n");
         printf("1. Mevcut Altdizini Goruntule\n");
         printf("2. Dosya veya Klasor Olustur\n");
