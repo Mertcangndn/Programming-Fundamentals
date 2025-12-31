@@ -1,27 +1,27 @@
 #ifndef FILE_MANAGER_H
 #define FILE_MANAGER_H
 
-// Kullanacağımız Kütüphaneler (Başka kütüphane kullanırsak buraya ekleyelim arkadaşlar.)
+//Kullanacağımız Kütüphaneler (Başka kütüphane kullanırsak buraya ekleyelim arkadaşlar.)
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h> //CLI Menü için kütüphane
 #include <windows.h>
-#include <time.h>   // Zaman işlemleri için (Geri Dönüşüm Kutusu)
+#include <time.h>   //Zaman işlemleri için (Geri Dönüşüm Kutusu)
 //==========================================================================================================================================
 
 
 
-// Sabitler (Buffer boyutları vs. buraya yazalım)
+//Sabitler (Buffer boyutları vs. buraya yazalım)
 #define MAX_FILENAME 100
-#define MAX_PATH_LENGTH 260         // Dosya yolu maksimum uzunluğu
-#define RECYCLE_TIMEOUT 604800      // 7 gün (saniye cinsinden) - Otomatik temizlik süresi
+#define MAX_PATH_LENGTH 260         //Dosya yolu maksimum uzunluğu
+#define RECYCLE_TIMEOUT 604800      //7 gün (saniye cinsinden) - Otomatik temizlik süresi
 #define TABLE_SIZE 1009 // Hash tablosu boyutu
 //==========================================================================================================================================
 
 
-// Struct'lar
-// Projenin klasör ve dosya yapısı (Aslında node)
+//Struct'lar
+//Projenin klasör ve dosya yapısı (Aslında node)
 typedef struct File{
     char name[MAX_FILENAME];    //Klasör veya Dosya adı
 
