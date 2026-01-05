@@ -67,7 +67,7 @@ void menu(void){
                     addFile(currentFile,fileName,1);
                 }
                 printf("Yeni Dosya Eklendi: ");directoryPrinter(findDirectory(fileName));
-                printf("\nDevam Etmek icin Herhangi Bir Tusa Basin");
+                printf("\n\nDevam Etmek icin Herhangi Bir Tusa Basin");
                 getch();
                 system("cls");
                 break;
@@ -96,11 +96,13 @@ void menu(void){
                 if(strcmp(fileName, "..") == 0){
                     if(currentFile->parent!=NULL){
                         currentFile=currentFile->parent;
+                        printf("\n\n[Bilgi] Dizin Degistirildi, Mevcut Dizin: ");directoryPrinter(currentFile);printf("\n\n");
                     }else{
                         printf("\n\n[Bilgi] Ana Dizindesiniz, Daha Uste Cikamassiniz.\n\n");
                     }
                 }else if(changeDirectory(root,fileName)!=NULL){
                     currentFile=changeDirectory(root,fileName);
+                    printf("\n\n[Bilgi] Dizin Degistirildi, Mevcut Dizin: ");directoryPrinter(currentFile);printf("\n\n");
                 }else{
                     printf("\n\nGirilen Isimde Bir Dosya Bulunamadi!\n\n");
                 }

@@ -44,7 +44,6 @@ typedef struct RecycleBin{
     int itemCount;          // Geri dönüşüm kutusundaki dosya sayısı
     int timeoutSeconds;     // Otomatik temizlik süresi (saniye)
 }RecycleBin;
-//==========================================================================================================================================
 
 // Harici Hash Düğümü (File struct'ına dokunmamak için)
 typedef struct HashNode {
@@ -52,7 +51,7 @@ typedef struct HashNode {
     File* filePtr;          // Asıl File düğümüne işaret eder
     struct HashNode* next;  // Çakışma (collision) olursa zincirleme için
 } HashNode;
-
+//==========================================================================================================================================
 
 
 
