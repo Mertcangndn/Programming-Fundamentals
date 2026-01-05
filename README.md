@@ -1,4 +1,4 @@
-# 📁 File Management System - Geri Dönüşüm Kutusu
+# 📁 File Management System
 
 C programlama dilinde Graf veri yapısı kullanılarak geliştirilmiş bir dosya yönetim sistemi simülatörü.
 
@@ -24,79 +24,91 @@ gcc --version
 # Proje klasörüne git
 cd FileManagementSystem
 
-# Derle
-gcc main.c File-Functions.c -o test.exe
+# Tüm dosyaları derle
+gcc main.c File-Functions.c recycle.c menu.c loading.c color.c -o program.exe
 
 # Çalıştır
-./test.exe
+./program.exe
 ```
 
 ### Derleme Seçenekleri
 
 | Durum | Komut |
 |-------|-------|
-| **Sadece Geri Dönüşüm Kutusu Testi** | `gcc main.c File-Functions.c -o test.exe` |
-| **Tüm Özellikler (menü, loading, renk)** | `gcc main.c File-Functions.c menu.c loading.c color.c -o test.exe` |
-
-> **Not:** `main.c`'de `menu()` ve `loadingScreen()` fonksiyonları yorum satırında. Bunları kullanmak isterseniz yorumu kaldırın ve tüm dosyaları derleyin.
-
+| **Tüm Proje** | `gcc main.c File-Functions.c recycle.c menu.c loading.c color.c -o program.exe` |
+| **Quick Test** | VS Code'da `F5` tuşu ile otomatik derleme ve çalıştırma |
 
 ## 📋 Özellikler
 
-### Geri Dönüşüm Kutusu Sistemi
-- **Dosya Silme**: Pointer kaydırma ile geri dönüşüm kutusuna taşıma
-- **Geri Yükleme**: Orijinal konumuna geri getirme
-- **Otomatik Temizlik**: Zaman aşımı sonrası kalıcı silme
-- **POSTFIX Algoritması**: Yol temizleme
+### Geri Dönüşüm Kutusu Sistemi (Queue)
+- **Dosya Silme:** Pointer kaydırma ile geri dönüşüm kutusuna taşıma (ENQUEUE)
+- **Geri Yükleme:** Orijinal konumuna geri getirme (DEQUEUE)
+- **Otomatik Temizlik:** Zaman aşımı sonrası kalıcı silme (FIFO)
+- **POSTFIX Algoritması:** Yol temizleme
+
+### Hash Table ile Hızlı Arama
+- Zincirleme (Chaining) yöntemi ile çakışma çözümü
+- O(1) ortalama arama süresi
 
 ### Dizin Görünümü
 - Ağaç yapısında (tree view) hiyerarşik gösterim
 - Klasörler `[köşeli parantez]` içinde
-- Recursive derinlik desteği
+- Renkli çıktı desteği
 
 ## 📂 Dosya Yapısı
 
 ```
 FileManagementSystem/
 ├── header.h          # Struct tanımları ve fonksiyon prototipleri
-├── File-Functions.c  # Tüm fonksiyon implementasyonları
-├── main.c            # Test menüsü
-├── menu.c            # Menü fonksiyonu
+├── File-Functions.c  # Dosya işlemleri fonksiyonları
+├── recycle.c         # Geri dönüşüm kutusu fonksiyonları
+├── menu.c            # Menü sistemi
 ├── loading.c         # Loading screen
-└── color.c           # Renk fonksiyonları
+├── color.c           # Renk fonksiyonları
+└── main.c            # Ana program
 ```
 
 ## 🗃️ Veri Yapıları
 
-### File Struct
+### File Struct (Graf Node'u)
 ```c
 typedef struct File {
     char name[MAX_FILENAME];
     int isFolder;
-    time_t deletedTime;              // Silinme zamanı
-    char originalPath[MAX_PATH];     // Orijinal konum
-    struct File* parent;
-    struct File* sibling;
-    struct File* child;
+    time_t deletedTime;                 // Silinme zamanı
+    char originalPath[MAX_PATH_LENGTH]; // Orijinal konum
+    struct File* parent;                // Üst dizin
+    struct File* sibling;               // Kardeş dosya
+    struct File* child;                 // Alt dosya
 } File;
 ```
 
-### RecycleBin Struct
+### RecycleBin Struct (Queue)
 ```c
 typedef struct RecycleBin {
-    File* root;
+    File* root;             // Kuyruğun başı (front)
+    File* tail;             // Kuyruğun sonu (rear)
     int itemCount;
     int timeoutSeconds;
 } RecycleBin;
+```
+
+### HashNode Struct (Hash Table)
+```c
+typedef struct HashNode {
+    char name[MAX_FILENAME];
+    File* filePtr;
+    struct HashNode* next;  // Zincirleme için
+} HashNode;
 ```
 
 ## 👥 Ekip
 
 | İsim | Modül |
 |------|-------|
-| **Volkan Taştemir** | Geri Dönüşüm Kutusu |
-| **Mertcan Gündoğan** | - |
-| **Ahmet Eray Bekar** | - |
+| **Mertcan Gündoğan** | Dosya işlemleri (Graph) |
+| **Ahmet Eray Bekar** | Dosya Bulma (Hash Table) |
+| **Volkan Taştemir** | Geri Dönüşüm Kutusu (Queue) |
 
 ---
 

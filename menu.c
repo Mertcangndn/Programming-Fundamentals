@@ -34,8 +34,15 @@ void menu(void){
         printf("8. Cikis\n");
         printf("============================================\n");
         printf("Seciminiz: ");
-        scanf("%d", &choice);
-        getchar(); // Buffer temizle
+        
+        // Girdi doğrulama - geçersiz girişleri yakala
+        if (scanf("%d", &choice) != 1) {
+            // Geçersiz girdi (sayı değil), buffer'ı temizle
+            while (getchar() != '\n');  // Buffer'daki tüm karakterleri temizle
+            choice = -1;  // Geçersiz seçim olarak işaretle
+        } else {
+            getchar(); // Sadece newline karakterini temizle
+        }
 
         switch(choice) {
             case 1:
