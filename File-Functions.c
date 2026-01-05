@@ -1,6 +1,6 @@
 #include "header.h"
 
-// YENİ DOSYA OLUŞTURMA FONKSİYONU
+// YENİ DOSYA OLUŞTURMA FONKSİYONU  [MERTCAN]
 File* createFile(char* name,int isFolder){
     File* newFile = malloc(sizeof(File));
 
@@ -15,7 +15,7 @@ File* createFile(char* name,int isFolder){
     return newFile;
 }
 
-
+//[ERAY]
 HashNode* hashTable[TABLE_SIZE];
 // Hash Fonksiyonu (Djb2)
 unsigned int hash(char *str) {
@@ -26,7 +26,7 @@ unsigned int hash(char *str) {
     return hash % TABLE_SIZE;
 }
 
-// Hash Tablosuna Ekleme Yardımcı Fonksiyonu
+// Hash Tablosuna Ekleme Yardımcı Fonksiyonu [ERAY]
 void addToHashTable(char* name, File* filePtr) {
     unsigned int index = hash(name);
     
@@ -40,7 +40,7 @@ void addToHashTable(char* name, File* filePtr) {
     
 }
 
-// DOSYAYI GRAFA EKLEME
+// DOSYAYI GRAFA EKLEME [MERTCAN]
 void addFile(File* currentFile, char* name, int isFolder){ //Burası degisebilir sona kucuk bir ekleme(Eray)
 
     //Klasörde aynı isimde başka dosya var mı kontrolü [EKLEME - MERTCAN]
@@ -67,7 +67,7 @@ void addFile(File* currentFile, char* name, int isFolder){ //Burası degisebilir
 
 
 
-// Ağaç yapısını yazdırır
+// Ağaç yapısını yazdırır [VOLKAN]
 void printTreeSimple(File* node, char* prefix, int isLast) {
     if (node == NULL) return;
     
@@ -97,6 +97,7 @@ void printTreeSimple(File* node, char* prefix, int isLast) {
     }
 }
 
+//[VOLKAN]
 void listDirectory(File* currentFile){
     if (currentFile == NULL) {
         printf("(Gecersiz dizin)\n");
@@ -108,10 +109,10 @@ void listDirectory(File* currentFile){
     printf("          DIZIN YAPISI\n");
     printf("=====================================\n\n");
     
-    // Kök dizini yazdır
+    //Kök dizini yazdır
     printf("[%s]\n", currentFile->name);
     
-    // Alt öğeleri yazdır
+    //Alt öğeleri yazdır
     if (currentFile->child == NULL) {
         printf("    (bos)\n");
     } else {
@@ -126,6 +127,7 @@ void listDirectory(File* currentFile){
     printf("\n=====================================\n");
 }
 
+//[ERAY]
 File* changeDirectory(File* currentFile, char* target){
 
     //Üst dizine dönme isteği kontrolü [EKLEME - MERTCAN]
@@ -166,7 +168,7 @@ File* changeDirectory(File* currentFile, char* target){
     return NULL;
 }
 
-//Hash table ile rastgele bir yerdeki dosya bulunabilir [EKLEME - MERTCAN]
+//Hash table ile rastgele bir yerdeki dosya bulunabilir [ERAY] [EKLEME - MERTCAN]
 File* findDirectory(char* target){
     
     // 1. Hedef ismin hash değerini bul
@@ -238,7 +240,7 @@ void printTreeColored(File* node, char* prefix, int isLast, File* target) {
     }
 }
 
-//Mevcut dizinin yolunu cmd'deki gibi yazdırmak için kullanılan recursive fonksiyon
+//Mevcut dizinin yolunu cmd'deki gibi yazdırmak için kullanılan recursive fonksiyon [MERTCAN]
 void directoryPrinter(File* currentFile){
     File* tempNode = currentFile;
     if(tempNode==NULL){

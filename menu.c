@@ -35,13 +35,13 @@ void menu(void){
         printf("============================================\n");
         printf("Seciminiz: ");
         
-        // Girdi doğrulama - geçersiz girişleri yakala
+        //Girdi doğrulama - geçersiz girişleri yakala  [BUFFER OVERLOAD HATASI İÇİN KONTROL - VOLKAN TAŞTEMİR]
         if (scanf("%d", &choice) != 1) {
-            // Geçersiz girdi (sayı değil), buffer'ı temizle
-            while (getchar() != '\n');  // Buffer'daki tüm karakterleri temizle
-            choice = -1;  // Geçersiz seçim olarak işaretle
+            // Geçersiz girdi (sayı girildiğinde) buffer'ı temizleme işlemi
+            while (getchar() != '\n');  //Buffer'daki tüm karakterleri temizle
+            choice = -1;  //Geçersiz seçim olarak işaretle
         } else {
-            getchar(); // Sadece newline karakterini temizle
+            getchar(); //Sadece newline karakterini temizle
         }
 
         switch(choice) {
@@ -61,7 +61,7 @@ void menu(void){
                 printf("\nDosya Ismi Giriniz: ");
                 scanf("%s",fileName);
 
-                if (strrchr(fileName, '.') != NULL) {   //isminde nokta varsa (code.py) dosya olarak, yoksa klasör olarak oluşturuyor.
+                if (strrchr(fileName, '.') != NULL) {   //isminde nokta varsa (orn:code.py) dosya olarak, yoksa klasör olarak oluşturuyor.
                     addFile(currentFile,fileName,0);
                 } else {
                     addFile(currentFile,fileName,1);

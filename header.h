@@ -59,7 +59,6 @@ void menu(void);   // gerçek komut satırı menüsü
 void loadingScreen(void); //loading screen için ayrı fonksiyon (test açamasında kolayca kaldırabilmek için)
 void color(int code);   //CMD Üzerindeki yazıların rengini değiştirmek için kullanılan fonksiyon. Renk kodlarını görmek için "../color.c" altına bakılabilir.
 void defaultPath(File* root); //Proje açıldığında halihazırda bir dizin olmasını sağlar
-void syncTreeToHash(File* node); //Ağaçtaki tüm dosyaları gezip Hash Tablosuna ekleyen fonksiton
 
 // 2. Dosya İşlemleri
 File* createFile(char* name,int isFolder);  //Node oluşturma (addFile içinde kendinden çalışıyor.)
@@ -82,8 +81,11 @@ int restoreFile(RecycleBin* bin, char* fileName, File* root);
 void autoCleanRecycleBin(RecycleBin* bin);
 void freeFile(File* file);
 void listRecycleBin(RecycleBin* bin);
-//==========================================================================================================================================
+
+
+// 4. Hash Table İşlemleri
 unsigned int hash(char *str);
 void addToHashTable(char* name, File* filePtr);
+//==========================================================================================================================================
 
 #endif
