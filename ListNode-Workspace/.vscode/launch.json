@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Aktif C Dosyasını Debug Et",
+            "type": "cppdbg",
+            "request": "launch",
+            // tasks.json'da oluşturduğumuz dinamik exe yolunu buraya veriyoruz:
+            "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+            // tasks.json'daki 'label' ismiyle birebir aynı olmalı:
+            "preLaunchTask": "C/C++: Aktif Dosyayı Derle",
+            "setupCommands": [
+                {
+                    "description": "gdb için düzgün yazdırmayı etkinleştir",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

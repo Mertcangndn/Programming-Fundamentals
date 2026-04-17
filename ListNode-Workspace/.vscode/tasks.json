@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "C/C++: Aktif Dosyayı Derle",
+            "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
+            "args": [
+                "-g",
+                "*.c",   // <--- KRİTİK NOKTA: Klasördeki tüm c dosyalarını al
+                "-o",
+                "${fileBasenameNoExtension}.exe" // <--- Açık olan dosyanın adıyla exe oluştur
+            ],
+            "options": {
+                "cwd": "${fileDirname}" // <--- Komutu dosyanın olduğu klasörde çalıştır
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ]
+}
